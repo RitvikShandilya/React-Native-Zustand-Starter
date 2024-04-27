@@ -1,6 +1,6 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
@@ -13,6 +13,8 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const router = useRouter();
+  const segments = useSegments();
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
@@ -22,6 +24,10 @@ export default function RootLayout() {
   useEffect(() => {
     if (error) throw error;
   }, [error]);
+
+  useEffect(() => {
+    router.replace('/components/(tabs)/Home');
+  }, []);
 
   useEffect(() => {
     if (loaded) {
@@ -40,7 +46,7 @@ function RootLayoutNav() {
 
   return (
       <Stack>
-
+        <Stack.Screen name="components/(tabs)" options={{ headerShown: false }} />
       </Stack>
   );
 }
